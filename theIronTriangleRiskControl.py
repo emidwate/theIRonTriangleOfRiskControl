@@ -1,6 +1,7 @@
 capital = float(input("Enter capital in $/Zl: "))
 percentage = float(input("Enter percentage risk, less than 2%: "))
 result = capital * percentage / 100
+print("Max lost you can afford which is the percentage you pasted according to the method:", result)
 
 while True:
     value = input("Buy or Sell: ")
@@ -22,13 +23,19 @@ while True:
             score = stopLoss - enter
             devide = (enter - takeProfit) / score
 
-        outcome = result // score
-        maxPrice = outcome * enter
-        print("The maximum amount of shares:", outcome)
-        print("The maximum price of transaction in $/Zl:", maxPrice)
-        print("Risk ratio:", devide)
-        print("Possible to earn:", abs(outcome * (takeProfit - enter)))
-        print("Approximately to lost:", result)
+        maxShares = int(capital // enter)
+        outcome = int(result // score)
+        maxOutcome = min(outcome, maxShares)
+
+        if maxOutcome == 0:
+            print("You cannot afford any shares with the given parameters")
+        else:
+            print("The maximum amount of shares:", maxOutcome)
+            print("The maximum price of transaction in $/Zl:", maxOutcome * enter)
+            print("Risk ratio:", devide)
+            print("Possible to earn:", abs(maxOutcome * (takeProfit - enter)))
+            print("Possible to lose:", abs(maxOutcome * (enter - stopLoss)))
+            print('Left capital after buying max:', capital - (maxOutcome * enter))
 
     fun(value)
     repeat = input("Do you want to run the program again? (yes/no) ")
