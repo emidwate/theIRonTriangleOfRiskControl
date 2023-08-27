@@ -1,5 +1,5 @@
 capital = float(input("Enter capital in $/Zl: "))
-percentage = float(input("Enter percentage of risk you can afford to loose in one transaction in percentage %: "))
+percentage = float(input("Enter percentage of risk you can afford to loose in one transaction: "))
 firstArmOfTriangle = capital * percentage / 100
 print("Max lost you can afford which is the percentage you pasted above:", firstArmOfTriangle)
 
