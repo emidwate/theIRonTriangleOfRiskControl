@@ -1,9 +1,9 @@
-capital = float(input("Enter capital: "))
-percentage = float(input("Enter percentage of risk you can afford to loose in one transaction: "))
-firstArmOfTriangle = capital * percentage / 100
-print("Max lost you can afford which is the percentage you pasted above based on your capital:", firstArmOfTriangle)
-
 while True:
+    capital = float(input("Enter capital: "))
+    percentage = float(input("Enter percentage of risk you can afford to loose in one transaction: "))
+    firstArmOfTriangle = capital * percentage / 100
+    print("Max lost you can afford which is the percentage you pasted above based on your capital:", firstArmOfTriangle)
+
     value = input("Buy or Sell: ")
 
     def fun(x):
@@ -42,16 +42,12 @@ while True:
                     print("One or more inputs are not valid numbers. Please try again.")
         secondArmOfTriangle = int(firstArmOfTriangle // lostMoneyPerShare)
 
-        if secondArmOfTriangle == 0:
-            print("You cannot afford any shares with the given parameters")
-        else:
-
-          print("The maximum amount of shares:", secondArmOfTriangle)
-          print("The maximum price of transaction in $/Zl:", secondArmOfTriangle * enter)
-          print("Profit/Risk ratio:", abs(riskRatio))
-          print("Possible to earn:", abs(secondArmOfTriangle * (takeProfit - enter)))
-          print("Possible to lose:", abs(secondArmOfTriangle * (enter - stopLoss)))
-          print('Left capital after buying max amount of shares:', capital - (secondArmOfTriangle * enter))
+        print("The maximum amount of shares:", secondArmOfTriangle)
+        print("The maximum price of transaction in $/Zl:", secondArmOfTriangle * enter)
+        print("Profit/Risk ratio:", abs(riskRatio))
+        print("Possible to earn:", abs(secondArmOfTriangle * (takeProfit - enter)))
+        print("Possible to lose:", abs(secondArmOfTriangle * (enter - stopLoss)))
+        print('Left capital after buying max amount of shares:', capital - (secondArmOfTriangle * enter))
 
     fun(value)
     repeat = input("Do you want to run the program again? (yes/no): ")
