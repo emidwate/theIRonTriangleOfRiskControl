@@ -48,23 +48,26 @@ while True:
     print("Total transaction cost:", total_cost)
     remaining_capital = capital - total_cost
     print('Left capital after buying max amount of shares:', remaining_capital)
+    
+    while True:
+        another_transaction = input("Do you want to buy a different number of shares? (yes/no): ")
+        if another_transaction.lower() == "yes":
+            new_shares = int(input("Enter the new number of shares: "))
+            new_total_transaction_cost = new_shares * entry_price
+            new_remaining_capital = capital - new_total_transaction_cost
 
-    another_transaction = input("Do you want to buy a different number of shares? (yes/no): ")
-    if another_transaction.lower() == "yes":
-        new_shares = int(input("Enter the new number of shares: "))
-        new_total_transaction_cost = new_shares * entry_price
-        new_remaining_capital = capital - new_total_transaction_cost
+            new_earnings = new_shares * earn_money_per_share
+            new_losses = new_shares * lost_money_per_share
 
-        new_earnings = new_shares * earn_money_per_share
-        new_losses = new_shares * lost_money_per_share
-
-        print("Updated results based on new number of shares:")
-        print("The new amount of shares to buy:", new_shares)
-        print("Total transaction cost:", new_total_transaction_cost)
-        print('Left capital after buying the new amount of shares:', new_remaining_capital)
-        print("Possible to earn with the new number of shares:", abs(new_earnings))
-        print("Possible to lose with the new number of shares:", abs(new_losses))
-        
+            print("Updated results based on new number of shares:")
+            print("The new amount of shares to buy:", new_shares)
+            print("Total transaction cost:", new_total_transaction_cost)
+            print('Left capital after buying the new amount of shares:', new_remaining_capital)
+            print("Possible to earn with the new number of shares:", abs(new_earnings))
+            print("Possible to lose with the new number of shares:", abs(new_losses))
+        if another_transaction.lower() == "no":
+            break
+    
     repeat = input("Do you want to run the program again? (yes/no): ")
     if repeat.lower() != "yes":
         break
