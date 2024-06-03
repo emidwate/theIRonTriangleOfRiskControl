@@ -7,10 +7,6 @@ while True:
     value = input("Buy or Sell: ")
 
     def calculate_max_shares():
-        earnMoneyPerShare = 0
-        lostMoneyPerShare = 0
-        enter = 0
-
         while True:
             try:
                 enter = float(input("Enter the position rate: "))
