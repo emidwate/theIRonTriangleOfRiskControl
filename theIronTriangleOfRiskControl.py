@@ -13,57 +13,68 @@ while True:
         if transaction_type.lower() not in ["buy", "sell"]:
             print("Please enter either buy or sell")
             continue
+
         else:
             def calculate_max_shares():
                 while True:
                     try:
-                        enry_price = float(input("Enter the position rate: "))
-                        if enry_price > capital:
-                            print("You can not buy shares that are greater than your capital")
-                            continue
-
-                        take_profit = float(input("Enter take profit value: "))
-                        stop_loss = float(input("Enter stop loss value: "))
-
-                        if transaction_type.lower() == 'buy':
-                            if stop_loss >= enry_price:
-                                print("Stop loss must be lower than the entry price. Please try again.")
+                        while True:
+                            enter = float(input("Enter the position rate: "))
+                            if enter > capital:
+                                print("You can not buy shares that are greater than your capital")
                                 continue
+                            else:
+                                take_profit = float(input("Enter take profit value: "))
+                                stop_loss = float(input("Enter stop loss value: "))
 
-                            elif take_profit <= enry_price:
-                                print("Take profit must be greater than the entry price. Please try again.")
-                                continue
-                        else:
-                            if stop_loss <= enry_price:
-                                print("Stop loss must be higher than the entry price. Please try again.")
-                                continue
+                                if transaction_type.lower() == 'buy':
+                                    if stop_loss >= enter:
+                                        print("Stop loss must be lower than the entry price. Please try again.")
+                                        continue
 
-                            elif take_profit >= enry_price:
-                                print("Take profit must be lower than the entry price. Please try again.")
-                                continue
+                                    elif take_profit <= enter:
+                                        print("Take profit must be greater than the entry price. Please try again.")
+                                        continue
 
-                        lost_money_per_share = abs(enry_price - stop_loss)
-                        earn_money_per_share = abs(take_profit - enry_price)
-                        risk_ratio = earn_money_per_share / lost_money_per_share
+                                    lost_money_per_share = enter - stop_loss
+                                    earn_money_per_share = take_profit - enter
+                                    risk_ratio = earn_money_per_share / lost_money_per_share
 
-                        max_shares = int(first_arm_of_triangle // lost_money_per_share)
-                        max_total_transaction_cost = max_shares * enry_price
+                                    max_shares = int(first_arm_of_triangle // lost_money_per_share)
+                                    max_total_transaction_cost = max_shares * enter
 
-                        return max_shares, risk_ratio, earn_money_per_share, lost_money_per_share, enry_price, max_total_transaction_cost
+                                else:
+                                    if stop_loss <= enter:
+                                        print("Stop loss must be higher than the entry price. Please try again.")
+                                        continue
+
+                                    elif take_profit >= enter:
+                                        print("Take profit must be lower than the entry price. Please try again.")
+                                        continue
+
+                                    lost_money_per_share = abs(enter - stop_loss)
+                                    earn_money_per_share = abs(take_profit - enter)
+                                    risk_ratio = earn_money_per_share / lost_money_per_share
+
+                                    max_shares = int(first_arm_of_triangle // lost_money_per_share)
+                                    max_total_transaction_cost = max_shares * enter
+
+                            return max_shares, risk_ratio, earn_money_per_share, lost_money_per_share, enter, max_total_transaction_cost
 
                     except ValueError:
                         print("One or more inputs are not valid numbers. Please try again.")
 
-            max_shares, risk_ratio, earn_money_per_share, lost_money_per_share, entry_price, max_total_transaction_cost = calculate_max_shares()
+
+            max_shares, risk_ratio, earn_money_per_share, lost_money_per_share, entry_price, total_cost = calculate_max_shares()
 
             print("Max loss you can afford based on your capital:", first_arm_of_triangle)
             print("The maximum amount of shares to buy:", max_shares)
             print("Profit/Risk ratio:", abs(risk_ratio))
             print("Possible to earn:", abs(max_shares * earn_money_per_share))
             print("Possible to lose:", abs(max_shares * lost_money_per_share))
-            print("Total transaction cost:", max_total_transaction_cost)
+            print("Total transaction cost:", total_cost)
 
-            remaining_capital = capital - max_total_transaction_cost
+            remaining_capital = capital - total_cost
 
             print('Left capital after buying max amount of shares:', remaining_capital)
 
@@ -90,7 +101,6 @@ while True:
             else:
                 break
         break
-
     repeat = input("Do you want to run the program again? (yes/no): ")
 
     if repeat.lower() != "yes":
