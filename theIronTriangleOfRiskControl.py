@@ -45,23 +45,26 @@ def theIronTriangleRiskControl():
 
                             lost_money_per_share = abs(entry_price - stop_loss)
                             earn_money_per_share = abs(take_profit - entry_price)
-                            risk_ratio = earn_money_per_share / lost_money_per_share
+                            risk_ratio = round(earn_money_per_share / lost_money_per_share, 2)
 
                             max_shares = min(first_arm_of_triangle // lost_money_per_share, capital // entry_price)
                             max_total_transaction_cost = max_shares * entry_price
 
-                            return max_shares, risk_ratio, earn_money_per_share, lost_money_per_share, entry_price, max_total_transaction_cost
+                            earnings = max_shares * earn_money_per_share
+                            loses = max_shares * lost_money_per_share
+
+                            return earnings, loses, max_shares, risk_ratio, earn_money_per_share, lost_money_per_share, entry_price, max_total_transaction_cost
 
                         except ValueError:
                             print("One or more inputs are not valid numbers. Please try again.")
 
-                max_shares, risk_ratio, earn_money_per_share, lost_money_per_share, entry_price, max_total_transaction_cost = calculate_max_shares()
+                earnings, loses, max_shares, risk_ratio, earn_money_per_share, lost_money_per_share, entry_price, max_total_transaction_cost = calculate_max_shares()
 
                 print("Max loss you can afford based on your capital:", first_arm_of_triangle)
                 print("The maximum amount of shares to buy:", max_shares)
-                print("Profit/Risk ratio:", abs(risk_ratio))
-                print("Possible to earn:", abs(max_shares * earn_money_per_share))
-                print("Possible to lose:", abs(max_shares * lost_money_per_share))
+                print("Profit/Risk ratio:", risk_ratio)
+                print("Possible to earn:", earnings)
+                print("Possible to lose:", loses)
                 print("Total transaction cost:", max_total_transaction_cost)
 
                 remaining_capital = capital - max_total_transaction_cost
@@ -79,15 +82,26 @@ def theIronTriangleRiskControl():
                     new_total_transaction_cost = new_shares * entry_price
                     new_remaining_capital = capital - new_total_transaction_cost
 
-                    new_earnings = new_shares * earn_money_per_share
+                    new_earnings = abs(new_shares * earn_money_per_share)
                     new_losses = new_shares * lost_money_per_share
 
-                    print("Updated results based on new number of shares:")
+                    print("Updated results based on new number of shares")
                     print("The new amount of shares to buy:", new_shares)
                     print("Total transaction cost:", new_total_transaction_cost)
-                    print('Left capital after buying the new amount of shares:', new_remaining_capital)
-                    print("Possible to earn with the new number of shares:", abs(new_earnings))
-                    print("Possible to lose with the new number of shares:", abs(new_losses))
+
+                    if new_total_transaction_cost > capital:
+                        print("Amount of capital you are missing:", new_remaining_capital)
+                    else:
+                        print('Left capital after buying the new amount of shares:', new_remaining_capital)
+
+                    print("Profit/Risk ratio:", risk_ratio)
+                    print("Possible to earn with the new number of shares:", new_earnings)
+
+                    if abs(new_losses) > first_arm_of_triangle:
+                        print("You have just exceeded the amount of money you can lose on this trade!")
+                        print(f"Max loss you can afford based on your capital was {first_arm_of_triangle} but now it is {new_losses}")
+                    else:
+                        print("Possible to lose with the new number of shares:", new_losses)
                 else:
                     break
             break
