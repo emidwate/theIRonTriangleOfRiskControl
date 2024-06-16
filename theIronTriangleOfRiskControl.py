@@ -18,8 +18,8 @@ def theIronTriangleRiskControl():
                 def calculate_max_shares():
                     while True:
                         try:
-                            enry_price = float(input("Enter the position rate: "))
-                            if enry_price > capital:
+                            entry_price = float(input("Enter the position rate: "))
+                            if entry_price > capital:
                                 print("You can not buy shares that are greater than your capital")
                                 continue
 
@@ -27,30 +27,30 @@ def theIronTriangleRiskControl():
                             stop_loss = float(input("Enter stop loss value: "))
 
                             if transaction_type.lower() == 'buy':
-                                if stop_loss >= enry_price:
+                                if stop_loss >= entry_price:
                                     print("Stop loss must be lower than the entry price. Please try again.")
                                     continue
 
-                                elif take_profit <= enry_price:
+                                elif take_profit <= entry_price:
                                     print("Take profit must be greater than the entry price. Please try again.")
                                     continue
                             else:
-                                if stop_loss <= enry_price:
+                                if stop_loss <= entry_price:
                                     print("Stop loss must be higher than the entry price. Please try again.")
                                     continue
 
-                                elif take_profit >= enry_price:
+                                elif take_profit >= entry_price:
                                     print("Take profit must be lower than the entry price. Please try again.")
                                     continue
 
-                            lost_money_per_share = abs(enry_price - stop_loss)
-                            earn_money_per_share = abs(take_profit - enry_price)
+                            lost_money_per_share = abs(entry_price - stop_loss)
+                            earn_money_per_share = abs(take_profit - entry_price)
                             risk_ratio = earn_money_per_share / lost_money_per_share
 
-                            max_shares = int(first_arm_of_triangle // lost_money_per_share)
-                            max_total_transaction_cost = max_shares * enry_price
+                            max_shares = min(first_arm_of_triangle // lost_money_per_share, capital // entry_price)
+                            max_total_transaction_cost = max_shares * entry_price
 
-                            return max_shares, risk_ratio, earn_money_per_share, lost_money_per_share, enry_price, max_total_transaction_cost
+                            return max_shares, risk_ratio, earn_money_per_share, lost_money_per_share, entry_price, max_total_transaction_cost
 
                         except ValueError:
                             print("One or more inputs are not valid numbers. Please try again.")
